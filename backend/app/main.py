@@ -2,12 +2,15 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import engine, Base
-from app.routers import examples
+from app.routers import examples, traffic_logs, ml_models, alerts
+
+# Import models to ensure they are registered with Base
+from app.models import traffic_log, ml_model, alert
 
 # 데이터베이스 테이블 생성
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Module 5 API", version="1.0.0")
+app = FastAPI(title="Module 5 API - Firewall Traffic Analysis", version="1.0.0")
 
 # CORS 설정
 app.add_middleware(
@@ -20,6 +23,9 @@ app.add_middleware(
 
 # 라우터 등록
 app.include_router(examples.router)
+app.include_router(traffic_logs.router)
+app.include_router(ml_models.router)
+app.include_router(alerts.router)
 
 
 @app.get("/api/health")
