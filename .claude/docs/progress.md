@@ -1,5 +1,33 @@
 # Progress Log
 
+## [2026-02-10 17:30] ML 위험도 설명 기능 추가
+
+### 변경된 파일
+
+**Backend (be-agent) - ML 엔진 개선**
+- `backend/app/schemas/ml_analysis.py`: AnalysisResult에 `explanation` 필드 추가
+- `backend/app/ml/preprocessor.py`: 학습 통계 저장 기능 추가 (평균, 표준편차, IQR)
+- `backend/app/ml/anomaly_detector.py`: Feature importance 계산 메서드 추가
+- `backend/app/ml/predictor.py`: 한국어 설명 자동 생성 로직 구현
+
+**Frontend (fe-agent) - UI 개선**
+- `frontend/src/types/ml.ts`: AnalysisResult에 `explanation` 필드 추가
+- `frontend/src/components/ml/AnalysisResults.tsx`: "위험 원인" 컬럼 추가 및 시각화
+
+### 작업 요약
+- ✅ ML 이상 탐지 결과에 위험도 설명 기능 추가
+- ✅ Feature importance 기반 정량적 분석 (평균 대비 배수 계산)
+- ✅ IQR 기반 정상 범위 판단 및 이상치 탐지
+- ✅ 한국어 설명 자동 생성 ("패킷 수가 평균보다 100배 높음" 등)
+- ✅ 프론트엔드에 빨간색 강조 표시 및 불릿 리스트 형태로 표시
+- ✅ 다중 이유 파싱 및 표시 (" | " 구분자 처리)
+
+### 구현된 주요 기능
+- **Explanation 생성 알고리즘**: Perturbation 방식으로 feature importance 계산
+- **정량적 비교**: 정상 범위(IQR) 대비 얼마나 벗어났는지 수치화
+- **사용자 친화적 출력**: "패킷 수", "전송 바이트" 등 한국어 용어 사용
+- **프론트엔드 시각화**: 위험 원인을 테이블 컬럼으로 명확히 표시
+
 ## [2026-02-10 14:00] 전체 프로젝트 구조 커밋
 
 ### 변경된 파일
@@ -138,8 +166,10 @@
 - **Frontend**: 반응형 UI, 실시간 표시, 위험도 색상, 네비게이션
 
 ## 다음 스텝
-- [ ] ML 모델링 구현 (이상 탐지 알고리즘)
+- [x] ML 모델링 구현 (이상 탐지 알고리즘) - Isolation Forest 완료
+- [x] ML 위험도 설명 기능 추가 - 완료
+- [x] logcollector C 데몬 빌드 - MSYS2/MinGW로 완료
 - [ ] Alert 테스트 데이터 생성
-- [ ] logcollector C 데몬 빌드 (MinGW 설치 후)
 - [ ] 실시간 로그 업데이트 (WebSocket/SSE)
-- [ ] 모델 학습 및 병합 UI
+- [ ] ML 모델 성능 튜닝 및 파라미터 최적화
+- [ ] 대시보드 통계 차트 개선

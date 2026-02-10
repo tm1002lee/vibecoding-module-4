@@ -1,6 +1,7 @@
 #include "db.h"
 #include "config.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -119,7 +120,7 @@ int db_check_and_roll(LogDB *db, int max_size_mb) {
     // Generate new DB filename with timestamp
     char new_path[512];
     time_t now = time(NULL);
-    snprintf(new_path, sizeof(new_path), "%s%ld.db", DB_ROLLING_PREFIX, now);
+    snprintf(new_path, sizeof(new_path), "%s%lld.db", DB_ROLLING_PREFIX, (long long)now);
 
     // Rename current DB
     rename(db->db_path, new_path);

@@ -24,6 +24,12 @@ export default function Navigation() {
             >
               Alerts
             </Link>
+            <Link
+              href="/ml"
+              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-700 hover:text-indigo-600"
+            >
+              ML Dashboard
+            </Link>
           </div>
           <div className="flex items-center">
             <span className="text-sm font-semibold text-gray-800">
