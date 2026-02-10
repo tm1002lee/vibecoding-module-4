@@ -196,3 +196,30 @@ def get_model_info(
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get model info: {str(e)}")
+
+
+@router.delete("/models/{model_id}")
+def delete_model(
+    model_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    Delete a trained model
+
+    Args:
+        model_id: Model ID to delete
+        db: Database session
+
+    Returns:
+        Success message
+
+    Raises:
+        HTTPException: If model not found or deletion fails
+    """
+    try:
+        MLService.delete_model(db=db, model_id=model_id)
+        return {"message": "Model deleted successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete model: {str(e)}")

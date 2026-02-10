@@ -1,5 +1,26 @@
 # Progress Log
 
+## [2026-02-10 18:00] ML 모델 삭제 기능 추가
+
+### 변경된 파일
+
+**Backend (be-agent)**
+- `backend/app/routers/ml_analysis.py`: DELETE /models/{model_id} 엔드포인트 추가
+- `backend/app/services/ml_service.py`: delete_model() 메서드 구현
+
+### 작업 요약
+- ✅ ML 모델 삭제 API 엔드포인트 추가
+- ✅ DB 레코드 삭제 및 물리적 파일(.pkl) 삭제 기능 구현
+- ✅ 404 에러 처리 (모델 없을 경우)
+- ✅ 파일 삭제 실패에도 안전하게 DB 정리
+- ✅ 프론트엔드 Delete 버튼 정상 작동 확인
+
+### 구현된 주요 기능
+- **DELETE /api/ml/models/{model_id}**: 모델 삭제 엔드포인트
+- **물리적 파일 삭제**: backend/models/*.pkl 파일 자동 삭제
+- **에러 처리**: 모델 없음(404), 파일 없음(무시), 기타 오류(500)
+- **안전한 삭제**: 파일 삭제 실패해도 DB는 정리
+
 ## [2026-02-10 17:30] ML 위험도 설명 기능 추가
 
 ### 변경된 파일

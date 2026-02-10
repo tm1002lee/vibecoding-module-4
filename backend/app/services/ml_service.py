@@ -4,6 +4,7 @@ ML Service - Orchestrates ML operations
 from typing import Dict, Any, List
 from datetime import datetime
 from sqlalchemy.orm import Session
+from pathlib import Path
 
 from app.models.traffic_log import TrafficLog
 from app.models.ml_model import MLModel
@@ -223,3 +224,35 @@ class MLService:
                 pass
 
         return result
+
+    @staticmethod
+    def delete_model(db: Session, model_id: int) -> None:
+        """
+        Delete ML model from database and filesystem
+
+        Args:
+            db: Database session
+            model_id: Model ID to delete
+
+        Raises:
+            ValueError: If model not found
+        """
+        # Get model from database
+        ml_model = db.query(MLModel).filter(MLModel.id == model_id).first()
+        if not ml_model:
+            raise ValueError(f"Model not found: {model_id}")
+
+        # Delete physical model file if exists
+        if ml_model.model_path:
+            model_file = Path(ml_model.model_path)
+            try:
+                if model_file.exists():
+                    model_file.unlink()
+            except Exception:
+                # Continue even if file deletion fails
+                # File might not exist or permissions issue
+                pass
+
+        # Delete from database
+        db.delete(ml_model)
+        db.commit()
